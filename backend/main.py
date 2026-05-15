@@ -2,7 +2,8 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr
+from typing import Optional
+from pydantic import BaseModel
 
 load_dotenv()
 
@@ -27,8 +28,9 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 class ContatoPayload(BaseModel):
     nome: str
-    email: str
-    mensagem: str
+    whatsapp: str
+    produto_servico: str
+    participou_licitacoes: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
