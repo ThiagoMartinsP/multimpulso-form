@@ -4,12 +4,11 @@
 
 .form-card {
   width: 100%;
-  max-width: 540px;
+  max-width: 580px;
   margin: 0 auto;
-  background: #ffffff;
-  border: 1px solid rgba(13, 92, 74, 0.12);
-  border-radius: 8px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* ---- Card Header ---- */
@@ -17,35 +16,57 @@
 .card-header {
   background: #072b23;
   padding: 1.5rem 2rem;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
 }
 
-.brand {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
+.logotipo {}
 
-.brand-mult {
-  color: #ffffff;
-}
-
-.brand-impulso {
+.eyebrow {
+  padding-top: 1.00rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: #d4af37;
+  margin-bottom: 0.5rem;
+}
+
+.headline {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 1rem;
+}
+
+.subheadline {
+  font-size: 0.850rem;
+  color: rgba(255, 255, 255, 0.742);
+  max-width: 520px;
+  line-height: 1.55;
 }
 
 .card-tagline {
   margin-top: 0.35rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.742);
   font-size: 0.875rem;
+  align-self: center;
 }
 
 /* ---- Card Body ---- */
 
 .card-body {
-  padding: 2rem;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
 }
 
 .form-title {
@@ -82,6 +103,11 @@
   letter-spacing: 0.03em;
 }
 
+.label-whatsapp {
+  color: #25D366;
+}
+
+
 /* ---- Input Wrapper ---- */
 
 .input-wrapper {
@@ -98,9 +124,17 @@
   flex-shrink: 0;
 }
 
+.form-group .icon-title-input {
+  color: #2c3a32;
+}
+
 .input-wrapper input {
   width: 100%;
-  padding: 0.7rem 0.875rem 0.7rem 2.25rem;
+  padding-top: 0.7rem;
+  padding-right: 0.875rem;
+  padding-bottom: 0.7rem;
+  padding-left: 1rem;
+  text-align: left;
   border: 1px solid rgba(13, 92, 74, 0.2);
   border-radius: 6px;
   background: #ffffff;
@@ -126,6 +160,12 @@
   color: #7a8c85;
   line-height: 1.55;
   font-style: italic;
+}
+
+.field-hint--error {
+  color: #b91c1c;
+  font-style: normal;
+  font-weight: 500;
 }
 
 /* ---- Multiple Choice Options ---- */
@@ -175,6 +215,10 @@
   cursor: pointer;
   transition: background 0.2s;
   margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-submit:hover:not(:disabled) {

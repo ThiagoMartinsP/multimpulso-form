@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { User, Phone, Package, FileText } from "lucide-react";
+import { User, Phone, Package, FileText, Send } from "lucide-react";
 import "./Form.css";
 import { FaWhatsapp } from "react-icons/fa"
-
+import LogotipoMultimpulsoSvg from "../assets/logotipo-multimpulso-escuro.svg"
 const API_URL = "http://localhost:8000/api/contato";
 
 const LICITACAO_OPTIONS = [
@@ -28,6 +28,7 @@ export default function Form() {
   });
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showLicitacaoHint, setShowLicitacaoHint] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -40,10 +41,15 @@ export default function Form() {
 
   function handleOption(value) {
     setFormData((prev) => ({ ...prev, participou_licitacoes: value }));
+    setShowLicitacaoHint(false);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!formData.participou_licitacoes) {
+      setShowLicitacaoHint(true);
+      return;
+    }
     setLoading(true);
     setStatus(null);
     try {
@@ -69,22 +75,36 @@ export default function Form() {
 
   return (
     <div className="form-card">
+
       <div className="card-header">
-        <div className="brand">
-          <span className="brand-mult">Mult</span>
-          <span className="brand-impulso">impulso</span>
+        <div className="logotipo">
+          <img src={LogotipoMultimpulsoSvg}></img>
         </div>
-        <p className="card-tagline">Reunião de 30 minutos · sem compromisso</p>
+        <hr style={{ border: 'none', borderTop: '1px solid #7a8c85' }} />
+        <header class="body-header">
+          <p class="eyebrow">
+            Análise gratuita
+          </p>
+          <h3 class="headline">
+            Sua empresa tem potencial no mercado de licitações?
+          </h3>
+          <p class="subheadline">
+            Preencha o formulário e receba uma análise gratuita sobre as oportunidades de licitação para o seu negócio.
+          </p>
+        </header>
+        <p className="card-tagline"></p>
       </div>
 
       <div className="card-body">
-        <h2 className="form-title">Diagnóstico gratuito de licitações</h2>
-
         <form className="contact-form" onSubmit={handleSubmit}>
+
+          {/* Nome label */}
           <div className="form-group">
-            <label htmlFor="nome">Nome</label>
+            <label htmlFor="nome" className="icon-title-input">
+              <User size={16} />
+              <p>Nome</p>
+            </label>
             <div className="input-wrapper">
-              <User size={16} className="input-icon" />
               <input
                 id="nome"
                 name="nome"
@@ -97,10 +117,13 @@ export default function Form() {
             </div>
           </div>
 
+          {/* WhatsApp label*/}
           <div className="form-group">
-            <label htmlFor="whatsapp">WhatsApp</label>
+            <label htmlFor="whatsapp" className="icon-title-input">
+              <FaWhatsapp size={16} />
+              <p>WhatsApp</p>
+            </label>
             <div className="input-wrapper">
-              <FaWhatsapp size={16} className="input-icon" />
               <input
                 id="whatsapp"
                 name="whatsapp"
@@ -113,12 +136,13 @@ export default function Form() {
             </div>
           </div>
 
+          {/* Produto/serviço label */}
           <div className="form-group">
-            <label htmlFor="produto_servico">
-              Qual o produto ou serviço que sua empresa oferece?
+            <label htmlFor="produto_servico" className="icon-title-input">
+              <Package size={16} />
+              <p>Qual o produto ou serviço que sua empresa oferece?</p>
             </label>
             <div className="input-wrapper">
-              <Package size={16} className="input-icon" />
               <input
                 id="produto_servico"
                 name="produto_servico"
@@ -130,16 +154,17 @@ export default function Form() {
               />
             </div>
             <p className="field-hint">
-              Cada reunião é preparada do zero para o seu negócio. Com essa
+              Cada análise é preparada do zero para o seu negócio. Com essa
               informação, já chegamos com oportunidades reais levantadas
               especificamente para o seu produto/serviço.
             </p>
           </div>
 
+          {/* Empresa já participou de licitações label*/}
           <div className="form-group">
-            <label className="group-label">
+            <label htmlFor="participacao-licitacoes" className="icon-title-input">
               <FileText size={16} />
-              Sua empresa já participou de licitações?
+              <p>Sua empresa já participou de licitações?</p>
             </label>
             <div className="options-group">
               {LICITACAO_OPTIONS.map((option) => (
@@ -153,10 +178,13 @@ export default function Form() {
                 </button>
               ))}
             </div>
+            {showLicitacaoHint && (
+              <p className="field-hint field-hint--error">Selecione uma opção para continuar.</p>
+            )}
           </div>
 
           <button type="submit" disabled={loading} className="btn-submit">
-            {loading ? "Enviando…" : "Enviar"}
+            {loading ? "Enviando…" : <><Send size={16} />Quero minha análise gratuita</>}
           </button>
 
           {status === "success" && (
@@ -166,7 +194,7 @@ export default function Form() {
             <p className="msg msg-error">Erro ao enviar. Tente novamente.</p>
           )}
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
