@@ -22,7 +22,11 @@
   display: flex;
 }
 
-.logotipo {}
+.logotipo img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
 .eyebrow {
   padding-top: 1.00rem;
