@@ -3,7 +3,7 @@ import { User, Phone, Package, FileText, Send } from "lucide-react";
 import "./Form.css";
 import { FaWhatsapp } from "react-icons/fa"
 import LogotipoMultimpulsoSvg from "../assets/logotipo-multimpulso-escuro.svg"
-const API_URL = "http://localhost:8000/api/contato";
+const API_URL = "/api/contato";
 
 const LICITACAO_OPTIONS = [
   "Nunca participou.",
@@ -25,6 +25,7 @@ export default function Form() {
     whatsapp: "",
     produto_servico: "",
     participou_licitacoes: "",
+    website: "",
   });
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -62,7 +63,7 @@ export default function Form() {
       const data = await res.json();
       if (data.sucesso) {
         setStatus("success");
-        setFormData({ nome: "", whatsapp: "", produto_servico: "", participou_licitacoes: "" });
+        setFormData({ nome: "", whatsapp: "", produto_servico: "", participou_licitacoes: "", website: "" });
       } else {
         setStatus("error");
       }
@@ -181,6 +182,19 @@ export default function Form() {
             {showLicitacaoHint && (
               <p className="field-hint field-hint--error">Selecione uma opção para continuar.</p>
             )}
+          </div>
+
+          <div style={{ position: "absolute", left: "-9999px", top: "-9999px", height: 0, overflow: "hidden" }} aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex="-1"
+              autoComplete="off"
+              value={formData.website}
+              onChange={handleChange}
+            />
           </div>
 
           <button type="submit" disabled={loading} className="btn-submit">
