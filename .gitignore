@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 .env
 .venv/
+__init__.py
 
 # Node / React
 node_modules/
