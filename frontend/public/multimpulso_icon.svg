@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="#0D5C4A"/>
+  <!-- Gráfico M estilizado -->
+  <polyline points="80,370 170,190 256,310 342,190 432,370"
+    stroke="#D4AF37" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Círculo dourado no pico -->
+  <circle cx="256" cy="130" r="44" fill="#D4AF37"/>
+  <!-- Seta triangular apontando para cima -->
+  <polygon points="220,140 256,88 292,140" fill="#D4AF37"/>
+</svg>
