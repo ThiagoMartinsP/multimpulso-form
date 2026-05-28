@@ -255,6 +255,17 @@
   border-left: 3px solid #ef4444;
 }
 
+/* ---- Botão WhatsApp ---- */
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #ffffff;
+}
+
+.btn-submit.btn-whatsapp:hover {
+  background: #1ebe5b;
+}
+
 /* ---- Responsivo ---- */
 
 @media (max-width: 560px) {

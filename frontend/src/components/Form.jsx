@@ -1,9 +1,18 @@
 import { useState } from "react";
-import { User, Phone, Package, FileText, Send } from "lucide-react";
+import { User, Package, FileText } from "lucide-react";
 import "./Form.css";
 import { FaWhatsapp } from "react-icons/fa"
 import LogotipoMultimpulsoSvg from "../assets/logotipo-multimpulso-escuro.svg"
 const API_URL = "/api/contato";
+
+// PREENCHA: número da empresa, só dígitos (55 + DDD + número).
+const WHATSAPP_NUMERO = "5521993364221";
+
+// AJUSTE o texto-base da mensagem. Os dados do lead chegam em `dados`.
+function montarLinkWhatsapp(dados) {
+  const mensagem = `Olá! Sou ${dados.nome.split(' ')[0]}, preenchi o formulário e tenho interesse na análise de licitações para meu negócio.`;
+  return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
+}
 
 const LICITACAO_OPTIONS = [
   "Nunca participou.",
@@ -19,16 +28,16 @@ function formatPhone(value) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
+const INITIAL_FORM = {
+  nome: "",
+  whatsapp: "",
+  produto_servico: "",
+  participou_licitacoes: "",
+  website: "",
+};
+
 export default function Form() {
-  const [formData, setFormData] = useState({
-    nome: "",
-    whatsapp: "",
-    produto_servico: "",
-    participou_licitacoes: "",
-    website: "",
-  });
-  const [status, setStatus] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState(INITIAL_FORM);
   const [showLicitacaoHint, setShowLicitacaoHint] = useState(false);
 
   function handleChange(e) {
@@ -45,33 +54,20 @@ export default function Form() {
     setShowLicitacaoHint(false);
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     if (!formData.participou_licitacoes) {
       setShowLicitacaoHint(true);
       return;
     }
-    setLoading(true);
-    setStatus(null);
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      if (data.sucesso) {
-        setStatus("success");
-        setFormData({ nome: "", whatsapp: "", produto_servico: "", participou_licitacoes: "", website: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    } finally {
-      setLoading(false);
-    }
+    // não espera o backend; keepalive mantém a requisição viva mesmo após a navegação pro WhatsApp
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+      keepalive: true,
+    }).catch(() => {});
+    window.location.href = montarLinkWhatsapp(formData);
   }
 
   return (
@@ -149,7 +145,7 @@ export default function Form() {
                 name="produto_servico"
                 type="text"
                 required
-                placeholder="ex: Vendo uniformes profissionais para empresas"
+                placeholder="ex: Papelaria"
                 value={formData.produto_servico}
                 onChange={handleChange}
               />
@@ -197,16 +193,9 @@ export default function Form() {
             />
           </div>
 
-          <button type="submit" disabled={loading} className="btn-submit">
-            {loading ? "Enviando…" : <><Send size={16} />Quero minha análise gratuita</>}
+          <button type="submit" className="btn-submit btn-whatsapp">
+            <FaWhatsapp size={18} />Quero minha análise no WhatsApp
           </button>
-
-          {status === "success" && (
-            <p className="msg msg-success">Mensagem enviada com sucesso!</p>
-          )}
-          {status === "error" && (
-            <p className="msg msg-error">Erro ao enviar. Tente novamente.</p>
-          )}
         </form>
       </div >
     </div >
