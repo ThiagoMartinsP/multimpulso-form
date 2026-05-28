@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, BackgroundTasks
 from slowapi import Limiter
 from src.infrastructure.entity.ContatoPayload import ContatoPayload
 from src.infrastructure.repository.IContatoRepository import IContatoRepository
@@ -18,8 +18,8 @@ class ContatoController:
             methods=["POST"]
         )
 
-    def salvarContato(self, request: Request, payload: ContatoPayload):
+    def salvarContato(self, request: Request, payload: ContatoPayload, background_tasks: BackgroundTasks):
         if payload.website:
             return {"sucesso": True}
-        self.service.salvarContato(payload)
+        background_tasks.add_task(self.service.salvarContato, payload)
         return {"sucesso": True}
