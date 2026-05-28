@@ -1,7 +1,11 @@
 import os
+import logging
 import httpx
 from src.infrastructure.entity.ContatoPayload import ContatoPayload
 from src.infrastructure.notification.INotificacaoService import INotificacaoService
+
+logger = logging.getLogger(__name__)
+
 
 class TelegramNotificacaoService(INotificacaoService):
 
@@ -13,6 +17,10 @@ class TelegramNotificacaoService(INotificacaoService):
         self._api_url = f"https://api.telegram.org/bot{self._token}/sendMessage"
 
     def enviar(self, contato: ContatoPayload) -> None:
+        if not self._token or not self._chat_id:
+            logger.error("Telegram não configurado: TELEGRAM_TOKEN ou TELEGRAM_CHAT_ID_GROUP ausente.")
+            return
+
         mensagem = (
             f"📋 Novo contato!\n"
             f"👤 Nome: {contato.nome}\n"
@@ -20,7 +28,20 @@ class TelegramNotificacaoService(INotificacaoService):
             f"🏢 Produto/Serviço: {contato.produto_servico}\n"
             f"📄 Licitações: {contato.participou_licitacoes}"
         )
-        httpx.post(self._api_url, json={
-            "chat_id": self._chat_id,
-            "text": mensagem
-        })
+
+        try:
+            response = httpx.post(
+                self._api_url,
+                json={"chat_id": self._chat_id, "text": mensagem},
+                timeout=10,
+            )
+        except httpx.RequestError as exc:
+            logger.error("Falha de rede ao enviar notificação ao Telegram: %s", exc)
+            return
+
+        if response.is_error:
+            logger.error(
+                "Telegram recusou o envio (HTTP %s): %s",
+                response.status_code,
+                response.text,
+            )
