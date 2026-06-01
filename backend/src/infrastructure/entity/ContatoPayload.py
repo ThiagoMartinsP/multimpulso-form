@@ -6,8 +6,9 @@ class ContatoPayload(BaseModel):
     whatsapp: str = Field(pattern=r"^\(\d{2}\)\s\d{4,5}-\d{4}$")
     produto_servico: str = Field(min_length=5, max_length=500)
     participou_licitacoes: Optional[Literal[
-        "Nunca participou.",
-        "Sim, mas sem sucesso.",
-        "Sim, mas gostaria de aumentar o faturamento.",
+        "Nunca participamos e não conheço bem o processo.",
+        "Ainda não participamos, mas queremos começar.",
+        "Já tentamos, mas não tivemos sucesso.",
+        "Já vendemos para o governo, mas queremos escalar."
     ]] = None
     website: str = Field(default="", max_length=200)  # honeypot anti-spam
