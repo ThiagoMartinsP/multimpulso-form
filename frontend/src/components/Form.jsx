@@ -15,9 +15,10 @@ function montarLinkWhatsapp(dados) {
 }
 
 const LICITACAO_OPTIONS = [
-  "Nunca participou.",
-  "Sim, mas sem sucesso.",
-  "Sim, mas gostaria de aumentar o faturamento.",
+  "Nunca participamos e não conheço bem o processo.",
+  "Ainda não participamos, mas queremos começar.",
+  "Já tentamos, mas não tivemos sucesso.",
+  "Já vendemos para o governo, mas queremos escalar."
 ];
 
 function formatPhone(value) {
@@ -83,10 +84,10 @@ export default function Form() {
             Análise gratuita
           </p>
           <h3 class="headline">
-            Sua empresa tem potencial no mercado de licitações?
+            Descubra o potencial do seu negócio no mercado público
           </h3>
           <p class="subheadline">
-            Preencha o formulário e receba uma análise gratuita sobre as oportunidades de licitação para o seu negócio.
+            Preencha o formulário e receba uma análise gratuita — mapeamos ao vivo as oportunidades do seu segmento com um especialista em contratações públicas.
           </p>
         </header>
         <p className="card-tagline"></p>
@@ -145,15 +146,13 @@ export default function Form() {
                 name="produto_servico"
                 type="text"
                 required
-                placeholder="ex: Papelaria"
+                placeholder="Limpeza, Informática, Engenharia Civil"
                 value={formData.produto_servico}
                 onChange={handleChange}
               />
             </div>
             <p className="field-hint">
-              Cada análise é preparada do zero para o seu negócio. Com essa
-              informação, já chegamos com oportunidades reais levantadas
-              especificamente para o seu produto/serviço.
+              Cada análise é preparada do zero para o seu negócio. Com essa informação, chegamos à nossa conversa com oportunidades reais do seu segmento já mapeadas.
             </p>
           </div>
 
@@ -161,7 +160,7 @@ export default function Form() {
           <div className="form-group">
             <label htmlFor="participacao-licitacoes" className="icon-title-input">
               <FileText size={16} />
-              <p>Sua empresa já participou de licitações?</p>
+              <p>Qual é o momento atual da sua empresa com licitações?</p>
             </label>
             <div className="options-group">
               {LICITACAO_OPTIONS.map((option) => (
@@ -194,7 +193,7 @@ export default function Form() {
           </div>
 
           <button type="submit" className="btn-submit btn-whatsapp">
-            <FaWhatsapp size={18} />Quero minha análise no WhatsApp
+            <FaWhatsapp size={18} />Quero minha análise gratuita
           </button>
         </form>
       </div >
