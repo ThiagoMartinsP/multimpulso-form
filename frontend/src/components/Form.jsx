@@ -2,17 +2,13 @@ import { useState } from "react";
 import { User, Package, FileText } from "lucide-react";
 import "./Form.css";
 import { FaWhatsapp } from "react-icons/fa"
-import LogotipoMultimpulsoSvg from "../assets/logotipo-multimpulso-escuro.svg"
+import Header from "./Header";
+import montarLinkWhatsapp from "../utils/montarLinkWhatsapp";
+import formatPhone from "../utils/formatPhone";
+
+import FieldForm from "./FieldForm";
+import FieldOptions from "./FieldOptions";
 const API_URL = "/api/contato";
-
-// PREENCHA: número da empresa, só dígitos (55 + DDD + número).
-const WHATSAPP_NUMERO = "5521993364221";
-
-// AJUSTE o texto-base da mensagem. Os dados do lead chegam em `dados`.
-function montarLinkWhatsapp(dados) {
-  const mensagem = `Olá! Sou ${dados.nome.split(' ')[0]}, preenchi o formulário e tenho interesse na análise de licitações para meu negócio.`;
-  return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
-}
 
 const LICITACAO_OPTIONS = [
   "Nunca participamos e não conheço bem o processo.",
@@ -20,14 +16,6 @@ const LICITACAO_OPTIONS = [
   "Já tentamos, mas não tivemos sucesso.",
   "Já vendemos para o governo, mas queremos escalar."
 ];
-
-function formatPhone(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  if (digits.length === 0) return "";
-  if (digits.length <= 2) return `(${digits}`;
-  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-}
 
 const INITIAL_FORM = {
   nome: "",
@@ -74,110 +62,56 @@ export default function Form() {
   return (
     <div className="form-card">
 
-      <div className="card-header">
-        <div className="logotipo">
-          <img src={LogotipoMultimpulsoSvg}></img>
-        </div>
-        <hr style={{ border: 'none', borderTop: '1px solid #7a8c85' }} />
-        <header class="body-header">
-          <p class="eyebrow">
-            Análise gratuita
-          </p>
-          <h3 class="headline">
-            Descubra o potencial do seu negócio no mercado público
-          </h3>
-          <p class="subheadline">
-            Preencha o formulário e receba uma análise gratuita — mapeamos ao vivo as oportunidades do seu segmento com um especialista em contratações públicas.
-          </p>
-        </header>
-        <p className="card-tagline"></p>
-      </div>
+      <Header />
 
       <div className="card-body">
         <form className="contact-form" onSubmit={handleSubmit}>
 
-          {/* Nome label */}
-          <div className="form-group">
-            <label htmlFor="nome" className="icon-title-input">
-              <User size={16} />
-              <p>Nome</p>
-            </label>
-            <div className="input-wrapper">
-              <input
-                id="nome"
-                name="nome"
-                type="text"
-                required
-                placeholder="Seu nome"
-                value={formData.nome}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FieldForm 
+            label="Nome"
+            icon={<User size={16} />}
+            id="nome"
+            name="nome"
+            type="text"
+            required
+            placeholder="Seu nome"
+            value={formData.nome}
+            onChange={handleChange}
+          />
 
-          {/* WhatsApp label*/}
-          <div className="form-group">
-            <label htmlFor="whatsapp" className="icon-title-input">
-              <FaWhatsapp size={16} />
-              <p>WhatsApp</p>
-            </label>
-            <div className="input-wrapper">
-              <input
-                id="whatsapp"
-                name="whatsapp"
-                type="tel"
-                required
-                placeholder="(21) 99999-0000"
-                value={formData.whatsapp}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FieldForm 
+            label="WhatsApp"
+            icon={<FaWhatsapp size={16} />}
+            id="whatsapp"
+            name="whatsapp"
+            type="tel"
+            required
+            placeholder="(21) 99999-0000"
+            value={formData.whatsapp}
+            onChange={handleChange}
+          />
 
-          {/* Produto/serviço label */}
-          <div className="form-group">
-            <label htmlFor="produto_servico" className="icon-title-input">
-              <Package size={16} />
-              <p>Qual o produto ou serviço que sua empresa oferece?</p>
-            </label>
-            <div className="input-wrapper">
-              <input
-                id="produto_servico"
-                name="produto_servico"
-                type="text"
-                required
-                placeholder="Limpeza, Informática, Engenharia Civil"
-                value={formData.produto_servico}
-                onChange={handleChange}
-              />
-            </div>
-            <p className="field-hint">
-              Cada análise é preparada do zero para o seu negócio. Com essa informação, chegamos à nossa conversa com oportunidades reais do seu segmento já mapeadas.
-            </p>
-          </div>
+          <FieldForm
+            label="Qual o produto ou serviço que sua empresa oferece?"
+            icon={<Package size={16} />}
+            id="produto_servico"
+            name="produto_servico"
+            type="text"
+            required
+            placeholder="Limpeza, Informática, Engenharia Civil"
+            value={formData.produto_servico}
+            onChange={handleChange}
+            field_hint="Cada análise é preparada do zero para o seu negócio. Com essa informação, chegamos à nossa conversa com oportunidades reais do seu segmento já mapeadas."
+          />
 
-          {/* Empresa já participou de licitações label*/}
-          <div className="form-group">
-            <label htmlFor="participacao-licitacoes" className="icon-title-input">
-              <FileText size={16} />
-              <p>Qual é o momento atual da sua empresa com licitações?</p>
-            </label>
-            <div className="options-group">
-              {LICITACAO_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  className={`option-card${formData.participou_licitacoes === option ? " selected" : ""}`}
-                  onClick={() => handleOption(option)}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            {showLicitacaoHint && (
-              <p className="field-hint field-hint--error">Selecione uma opção para continuar.</p>
-            )}
-          </div>
+          <FieldOptions
+            label="Qual é o momento atual da sua empresa com licitações?"
+            icon={<FileText size={16} />}
+            options={LICITACAO_OPTIONS}
+            selected={formData.participou_licitacoes}
+            onSelect={handleOption}
+            error={showLicitacaoHint ? "Selecione uma opção para continuar." : null}
+          />
 
           <div style={{ position: "absolute", left: "-9999px", top: "-9999px", height: 0, overflow: "hidden" }} aria-hidden="true">
             <label htmlFor="website">Website</label>
