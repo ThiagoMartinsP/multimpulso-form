@@ -101,7 +101,7 @@ export default function Form() {
             placeholder="Limpeza, Informática, Engenharia Civil"
             value={formData.produto_servico}
             onChange={handleChange}
-            field_hint="Cada análise é preparada do zero para o seu negócio. Com essa informação, chegamos à nossa conversa com oportunidades reais do seu segmento já mapeadas."
+            fieldHint="Cada análise é preparada do zero para o seu negócio. Com essa informação, chegamos à nossa conversa com oportunidades reais do seu segmento já mapeadas."
           />
 
           <FieldOptions
